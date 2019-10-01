@@ -35,7 +35,19 @@ class LinearRegressionModel:
         :return: np.array dim=(num_samples)
         """
         
-        return np.array(map(self.linear_regression, xs)))
+        return np.array(list(map(self.linear_regression, xs)))
+
+    def biasDerivation(self, xs, ys):
+        yp = self.predict(xs)
+        length = len(ys)
+        return (-2 / length) * (np.sum(ys - yp))
+
+    def weightDerivation(self, xs, ys):
+        yp = self.predict(xs)
+        length = len(ys)
+        # return np.sum((ys - yp) * xs.transpose(), axis = 0) #transpose a axis = 1
+        return (-2 / length) * (ys - yp) @ xs
+
 
     def gradient(self, xs, ys):
         """
@@ -48,8 +60,9 @@ class LinearRegressionModel:
         :param ys:  np.array dim=(num_samples)
         :return:    np.array dim=(input_dim), float
         """
-        dw = ...  # FIXME: 2.9.2
-        db = ...
+
+        dw = self.weightDerivation(xs, ys)
+        db = self.biasDerivation(xs, ys)
         return dw, db
 
     def gradient_descent(self, xs, ys, num_steps=100):
@@ -73,7 +86,7 @@ class LinearRegressionModel:
         self.b = self.b - self.lr * db
 
     def xyz(self, predictedValues, realValues):
-        return (predictedValue - realValue) ** 2
+        return (predictedValues - realValues) ** 2
 
     def loss(self, xs, ys):
         """
