@@ -23,6 +23,9 @@ class LinearRegressionModel:
         self.w = np.zeros(input_dim) if w is None else w
         self.b = b
 
+    def linear_regression(self, val):
+        return np.sum(np.multiply(val, self.w)) + self.b
+
     def predict(self, xs):
         """
         Runs the linear regression model over multiple input vectors xs. xs is a matrix, where i-th row is a feature
@@ -31,7 +34,8 @@ class LinearRegressionModel:
         :param xs: 2D np.array dim=(num_samples, input_dim)
         :return: np.array dim=(num_samples)
         """
-        return ...  # FIXME: 2.9.1
+        
+        return np.array(map(self.linear_regression, xs)))
 
     def gradient(self, xs, ys):
         """
@@ -59,13 +63,17 @@ class LinearRegressionModel:
         for _ in range(num_steps):
             self.step(xs, ys)
 
+
     def step(self, xs, ys):
         """
         Performs one gradient descent step and updates the parameters accordingly.
         """
         dw, db = self.gradient(xs, ys)
-        self.w = ...  # FIXME: 2.9.3
-        self.b = ...
+        self.w = self.w - self.lr * dw
+        self.b = self.b - self.lr * db
+
+    def xyz(self, predictedValues, realValues):
+        return (predictedValue - realValue) ** 2
 
     def loss(self, xs, ys):
         """
@@ -73,4 +81,7 @@ class LinearRegressionModel:
 
         :return: float
         """
-        return ...  # FIXME: 2.9.4
+        yp = self.predict(xs)
+        length = len(xs)
+
+        return np.sum(self.xyz(yp, ys)) / length  # FIXME: 2.9.4
