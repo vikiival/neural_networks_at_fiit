@@ -2,21 +2,21 @@ import numpy as np
 
 from model import LinearRegressionModel
 
+learning_rate = 0.03
+num_epochs = 10
+batch_size = 1
+
 m = LinearRegressionModel(
-            input_dim=1,
-            w=np.array([0.5]),
-            b=0.2)
+        input_dim=1,
+        learning_rate=learning_rate,
+        w=[2],
+        b=-2)
 
 
 d = (
-            np.array([
-                [1.2],
-                [1.5],
-                [1.3],
-                [1.7]
-            ]),
-            np.array([0.2, 0.4, 0.5, 3.8])
-        )
+        np.random.rand(9, 3),
+        np.array([i for i in range(9)])
+    )
 
 
 def test_predict():
