@@ -45,7 +45,6 @@ class LinearRegressionModel:
     def weightDerivation(self, xs, ys):
         yp = self.predict(xs)
         length = len(ys)
-        # return np.sum((ys - yp) * xs.transpose(), axis = 0) #transpose a axis = 1
         return (-2 / length) * (ys - yp) @ xs
 
 
