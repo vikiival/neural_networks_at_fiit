@@ -85,11 +85,18 @@ class MultilayerPerceptron:
             h:     np.array dim=?
             z_1:   np.array dim=?
         """
-        z_1 = ...  # FIXME: 3.4.1
-        h = ...
-        z_2 = ...
-        y_hat = ...
+
+        z_1 = self.w_1 @ x + self.b_1
+        h = self.sigma(z_1)
+        z_2 = self.w_2 @ h + self.b_2
+        y_hat = self.sigma(z_2)
         return y_hat, z_2, h, z_1
+
+    def xyz(self, y, yp, z_2):
+        a = 2 * (yp - y)
+        b = self.dsigma(z_2)
+        return np.multiply(a,b) 
+
 
     def gradient(self, x, y):
         """
@@ -105,8 +112,15 @@ class MultilayerPerceptron:
             db_2: np.array dim=?
         """
         y_hat, z_2, h, z_1 = self.predict(x)
-        dz_2 = ...  # FIXME: 3.4.2
-        db_2 = ...
-        dw_2 = ...
+        dz_2 = self.xyz(x, y, z_2)  # FIXME: 3.4.2
+        db_2 = dz_2 @ h.transpose()
+        dw_2 = dz_2
+
+        dz_1 = np.multiply(self.w_2.transpose() * dz_2, self.dsigma(z_1))
+        db_1 = dz_1 @ x.transpose()
+        dw_1 = dz_1
+
         ...  # Continue with first layer parameters
         return dw_1, db_1, dw_2, db_2
+
+# hint: transponse has no effect on vector
