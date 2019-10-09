@@ -95,8 +95,7 @@ class MultilayerPerceptron:
     def xyz(self, y, yp, z_2):
         a = 2 * (yp - y)
         b = self.dsigma(z_2)
-        return np.multiply(a,b) 
-
+        return np.multiply(a, b)
 
     def gradient(self, x, y):
         """
@@ -115,7 +114,6 @@ class MultilayerPerceptron:
         dz_2 = self.xyz(y, y_hat, z_2)  # FIXME: 3.4.2
         dw_2 = dz_2.reshape(len(dz_2), 1) @ h.reshape(len(h), 1).transpose()
         db_2 = dz_2
-        
 
         dz_1 = (self.w_2.transpose() @ dz_2) * self.dsigma(z_1)
         dw_1 = dz_1.reshape(len(dz_1), 1) @ x.reshape(len(x), 1).transpose()
@@ -124,4 +122,26 @@ class MultilayerPerceptron:
         ...  # Continue with first layer parameters
         return dw_1, db_1, dw_2, db_2
 
+    def accuracy(self, xs, ys):
+        """
+        Measures the accuracy of the model, i.e. how many xs has the right y predicted.
+
+        :return: float
+        """
+        correctlyPredicted = 0
+        for index, row in enumerate(xs):
+            print(index, row)
+            y_hat, z_2, h, z_1 = self.predict(row)
+            print(y_hat)
+            indexOfMax = np.argmax(y_hat)
+            if ys[index][indexOfMax]:
+                correctlyPredicted += 1
+            
+        # for each row in xs make predict
+        # take only y_hat
+        # y_hat get index of biggest
+        # ys should have one on same index
+        # if yes counter++
+        # return counter / len xs
+        return correctlyPredicted / len(xs)
 # hint: transponse has no effect on vector
