@@ -106,27 +106,20 @@ class MultilayerPerceptron:
         :param x: np.array dim=(dim_input)
         :param y: np.array dim=(dim_output)
         :return:
-            dw_1: np.array dim=?
+            dw_1: np.array dim=?neuro
             db_1: np.array dim=?
             dw_2: np.array dim=?
             db_2: np.array dim=?
         """
         y_hat, z_2, h, z_1 = self.predict(x)
         dz_2 = self.xyz(y, y_hat, z_2)  # FIXME: 3.4.2
-        print(len(y_hat))
-        print(len(z_2))
-        print(len(h))
-        print(len(z_1))
-        print(len(dz_2))
-        print(len(x))
-        print(len(y))
-        dW_2 = dz_2 * h
+        dw_2 = dz_2.reshape(len(dz_2), 1) @ h.reshape(len(h), 1).transpose()
         db_2 = dz_2
         
 
-        dz_1 = np.multiply(self.w_2.transpose() * dz_2, self.dsigma(z_1))
-        db_1 = dz_1 @ x.transpose()
-        dw_1 = dz_1
+        dz_1 = (self.w_2.transpose() @ dz_2) * self.dsigma(z_1)
+        dw_1 = dz_1.reshape(len(dz_1), 1) @ x.reshape(len(x), 1).transpose()
+        db_1 = dz_1
 
         ...  # Continue with first layer parameters
         return dw_1, db_1, dw_2, db_2
