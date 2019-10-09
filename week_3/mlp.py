@@ -112,9 +112,17 @@ class MultilayerPerceptron:
             db_2: np.array dim=?
         """
         y_hat, z_2, h, z_1 = self.predict(x)
-        dz_2 = self.xyz(x, y, z_2)  # FIXME: 3.4.2
-        db_2 = dz_2 @ h.transpose()
-        dw_2 = dz_2
+        dz_2 = self.xyz(y, y_hat, z_2)  # FIXME: 3.4.2
+        print(len(y_hat))
+        print(len(z_2))
+        print(len(h))
+        print(len(z_1))
+        print(len(dz_2))
+        print(len(x))
+        print(len(y))
+        dW_2 = dz_2 * h
+        db_2 = dz_2
+        
 
         dz_1 = np.multiply(self.w_2.transpose() * dz_2, self.dsigma(z_1))
         db_1 = dz_1 @ x.transpose()
