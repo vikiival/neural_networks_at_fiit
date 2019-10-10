@@ -130,9 +130,7 @@ class MultilayerPerceptron:
         """
         correctlyPredicted = 0
         for index, row in enumerate(xs):
-            print(index, row)
             y_hat, z_2, h, z_1 = self.predict(row)
-            print(y_hat)
             indexOfMax = np.argmax(y_hat)
             if ys[index][indexOfMax]:
                 correctlyPredicted += 1
