@@ -37,7 +37,7 @@ RUN ${PIP} --no-cache-dir install --upgrade \
 RUN ln -s $(which ${PYTHON}) /usr/local/bin/python
 
 ARG TF_PACKAGE=tensorflow
-ARG TF_PACKAGE_VERSION=2.0.0rc1
+ARG TF_PACKAGE_VERSION=2.0.0
 RUN ${PIP} install ${TF_PACKAGE}${TF_PACKAGE_VERSION:+==${TF_PACKAGE_VERSION}}
 
 COPY bashrc /etc/bash.bashrc
