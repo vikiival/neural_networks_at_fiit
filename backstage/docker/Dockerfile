@@ -50,7 +50,11 @@ RUN jupyter serverextension enable --py jupyter_http_over_ws
 RUN mkdir -p /labs && chmod -R a+rwx /labs/
 WORKDIR /labs
 RUN mkdir /.local && chmod a+rwx /.local
+
+# jupyter
 EXPOSE 8888
+# tensorboard
+EXPOSE 6006
 
 RUN ${PYTHON} -m ipykernel.kernelspec
 
