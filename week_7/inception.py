@@ -29,22 +29,48 @@ class Inception(Layer):
         super(Inception, self).__init__()
 
         # FIXME: Initialize all the layers you need for the Inception layer
-        self.conv1 = Conv2D(
+        self.b1conv1 = Conv2D(
+            filters=filters,
+            kernel_size=1,
+            padding='same',
+            activation=activation)
+        self.b2conv1 = Conv2D(
+            filters=filters,
+            kernel_size=1,
+            padding='same',
+            activation=activation)
+        self.b3conv1 = Conv2D(
+            filters=filters,
+            kernel_size=1,
+            padding='same',
+            activation=activation)
+        self.b4conv1 = Conv2D(
+            filters=filters,
+            kernel_size=1,
+            padding='same',
+            activation=activation)
+        self.conv3 = Conv2D(
             filters=filters,
             kernel_size=3,
             padding='same',
             activation=activation)
-        self.conv2 = Conv2D(
+        self.conv5 = Conv2D(
             filters=filters,
-            kernel_size=3,
+            kernel_size=5,
             padding='same',
             activation=activation)
+        self.pool = MaxPooling2D(pool_size=(3, 3),strides=1, padding='same')
 
     def call(self, x):
         # FIXME: Build the Inception layer
-        x = self.conv1(x)
-        x = self.conv2(x)
-        return x
+        b1 = self.b1conv1(x)
+        b2 = self.conv3(self.b2conv1(x))
+        b3 = self.conv5(self.b3conv1(x))
+        b4 = self.b4conv1(self.pool(x))
+        #x = self.conv1(x)
+        #x = self.conv2(x)
+        #return x
+        return concatenate([b1, b2, b3, b4])
 
 
 class InceptionNet(keras.Model):
